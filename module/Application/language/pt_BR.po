@@ -1,0 +1,110 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2020-08-02 22:55+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "application_name"
+msgstr "Gerenciador de Contratos"
+
+msgid "home_page"
+msgstr "Início"
+
+msgid "new"
+msgstr "Novo"
+
+msgid "customer_data"
+msgstr "Dados do cliente"
+
+msgid "name"
+msgstr "Nome"
+
+msgid "cpf"
+msgstr "CPF"
+
+msgid "address"
+msgstr "Endereço"
+
+msgid "number"
+msgstr "Número"
+
+msgid "borough"
+msgstr "Bairro"
+
+msgid "city"
+msgstr "Cidade"
+
+msgid "address_reference"
+msgstr "Ponto de referência"
+
+msgid "phone"
+msgstr "Telefone"
+
+msgid "mobile_phone"
+msgstr "Celular"
+
+msgid "email"
+msgstr "E-mail"
+
+msgid "start_date"
+msgstr "Data de retirada"
+
+msgid "end_date"
+msgstr "Data de devolução"
+
+msgid "payment_method"
+msgstr "Forma de pagamento"
+
+msgid "payment_method_cash"
+msgstr "Dinheiro"
+
+msgid "payment_method_debit_card"
+msgstr "Cartão de débito"
+
+msgid "payment_method_credit_card"
+msgstr "Cartão de crédito"
+
+msgid "payment_method_bank_transfer"
+msgstr "Transferência bancária"
+
+msgid "items"
+msgstr "Items"
+
+msgid "item_code"
+msgstr "Código"
+
+msgid "item_description"
+msgstr "Descrição"
+
+msgid "item_quantity"
+msgstr "Quantidade"
+
+msgid "item_unit_price"
+msgstr "Preço unitário"
+
+msgid "button_generate_contract_label"
+msgstr "Gerar contrato"
+
+msgid "welcome_message"
+msgstr "Bem-vindo ao Contract Manager!"
+
+msgid "description_message"
+msgstr "Gerencie aqui contratos com seus clientes."
+
+msgid "new_contract_button_label"
+msgstr "Crie novo contrato"
+
+msgid "in"
+msgstr "em"
+
+msgid "contract"
+msgstr "Contrato"

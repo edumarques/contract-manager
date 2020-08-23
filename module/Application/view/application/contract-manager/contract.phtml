@@ -1,0 +1,335 @@
+<?php
+/** @var Laminas\View\Renderer\PhpRenderer $this */
+
+use Application\Model\Contract\Contract;
+use Application\Model\Contract\ContractItem;
+use Application\Model\Customer\Customer;
+use Application\Service\PdfGeneratorServiceHelper;
+use Application\Util\Formatter;
+
+/** @var Contract $contract */
+$contract = $this->__get(PdfGeneratorServiceHelper::VARIABLE_CONTRACT);
+
+/** @var Customer $customer */
+$customer = $contract->getCustomer();
+
+/** @var ContractItem[] $items */
+$contractItems = $contract->getItems();
+
+/** @var DateTime $issueDate */
+$issueDate = $this->__get('issueDate');
+?>
+<div class="container">
+    <div class="text-center">
+        <img src="img/logo_mom.jpg" alt="Mom - Festas Provençais" width="150px">
+    </div>
+    <div class="text-center">
+        <h2 class="title">
+            CONTRATO DE DECORAÇÃO E LOCAÇÃO DE ARTIGOS E MOBÍLIAS PARA FESTAS
+        </h2>
+    </div>
+    <p class="text-center note">
+        Emissão: <b><?= Formatter::formatDate($issueDate, \Application\Util\DateTime::getDateFormatLong()) ?></b>
+    </p>
+    <p class="text-center paragraph">
+        <b>Identificação do cliente</b>
+    </p>
+    <table>
+        <tr>
+            <td>Cliente: <b><?= $customer->getName() ?></b></td>
+            <td>CPF: <b><?= $customer->getId() ?></b></td>
+        </tr>
+        <tr>
+            <td>Endereço: <b><?= $customer->getStreet() ?></b></td>
+            <td>Número: <b><?= $customer->getHouseNumber() ?></b></td>
+            <td>Bairro: <b><?= $customer->getBorough() ?></b></td>
+        </tr>
+        <tr>
+            <td>Ponto de referência: <b><?= $customer->getAddressReference() ?></b></td>
+            <td>Cidade: <b><?= $customer->getCity() ?></b></td>
+        </tr>
+        <tr>
+            <td>Telefone: <b><?= $customer->getPhone() ?></b></td>
+            <td>Celular: <b><?= $customer->getMobilePhone() ?></b></td>
+        </tr>
+        <tr>
+            <td>Email: <b><?= $customer->getEmail() ?></b></td>
+        </tr>
+    </table>
+    <p class="text-center paragraph">
+        <b>Items</b>
+    </p>
+    <table class="items">
+        <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Valor unitário</th>
+            <th>Valor total</th>
+        </tr>
+        <?php
+        $total = 0;
+        foreach ($contractItems as $contractItem) {
+            $item = $contractItem->getItem() ?>
+            <tr>
+                <td><?= $item->getCode() ?></td>
+                <td><?= $item->getDescription() ?></td>
+                <td><?= $contractItem->getQuantity() ?></td>
+                <td><?= Formatter::formatMoney($item->getPrice()) ?></td>
+                <td><?= Formatter::formatMoney($contractItem->getTotalValue()) ?></td>
+            </tr>
+        <?php $total += $contractItem->getTotalValue();
+        } ?>
+        <tr>
+            <td class="row-total"></td>
+            <td class="row-total"></td>
+            <td class="row-total"></td>
+            <td class="row-total"><b>Total</b></td>
+            <td class="row-total"><?= Formatter::formatMoney($total) ?></td>
+        </tr>
+    </table>
+    <p class="text-center paragraph">
+        Forma de pagamento: <b><?= $contract->getPaymentMethod() ?></b>
+    </p>
+    <hr>
+    <p class="text-justify paragraph">
+        CONTRATADO: MOM Festas provençais com sede na Avenida Interventor Mário Câmara (av. 6), nº 989 - Bairro:
+        Alecrim, Natal/RN, CEP:59.032.600 CNPJ:26.823.901/0001-77. Contatos: (84) 98816-0673 ou (84) 99412-1602.
+    </p>
+    <p class="text-justify paragraph">
+        <b>
+            As partes acima identificadas têm, entre si, justo acertado o presente contrato de decoração e locação de
+            artigos para festas, que se regerá pelas cláusulas seguintes e pelas condições de preço, forma e termo de
+            pagamento descritas no presente.
+        </b>
+    </p>
+    <p class="text-justify paragraph">
+        <b> I – DO OBJETO DO CONTRATO: </b>
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 1ª.</b> É objeto do presente contrato a locação dos seguintes itens, relacionados acima:
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 2ª.</b> A <b>CONTRATANTE</b> passará a ter responsabilidade pelos produtos listados acima durante o
+        período contratado, onde deverão ser entregues a <b>CONTRATADA</b> MOM Festas provençais perfeita condição de
+        uso na data também combinada em contrato
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 3ª.</b> O horário de funcionamento da empresa <b>CONTRATADA</b> é de segunda-feira a sexta-feira,
+        das 8hs às 17hs. E nos sábados das 8hs às 14hs. Não abrindo nos feriados.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo primeiro:</b> Todos os itens deverão ser retirados de segunda-feira à sexta-feira das 11hs às 16hs,
+        exceto aos sábados que deverão ser retirados das 10hs às 13hs. E a devolução dos itens deverão ocorrer no dia
+        seguinte da locação, nos horários das 8hs às 11hs, caso contrário o <b>CLIENTE</b> pagará a multa contratual que
+        corresponderá ao valor diário da locação, conforme valores impostos na cláusula 1ª deste instrumento.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo segundo:</b> Caso a data de devolução recaia em domingos ou feriados, será realizada a devolução no
+        primeiro dia útil subsequente.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo terceiro:</b> Fica a critério do vendedor da empresa <b>CONTRATADA</b>, caso tenha disponibilidade
+        a peça adquirida, em estipular horário para retirada e devolução das peças diferentemente no que consta no
+        parágrafo primeiro, no entanto , devendo as partes assinar um termo informando a concordância dos horários
+        pactuados.
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 4ª.</b> Caso o(a) cliente <b>CONTRATANTE</b> não devolva os itens alugados no prazo estabelecido na
+        cláusula 2ª, será cobrada uma multa diária, que já ficará descrita na cláusula 1º deste instrumento, como valor
+        de indenização.
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 5ª.</b> A forma de pagamento da locação deverá ser feita através de moeda corrente do país,
+        (dinheiro (espécie), cartão de crédito, débito ou transferência bancária), no entanto, devendo ser realizado o
+        pagamento 100% do valor na retirada das peças no estabelecimento empresarial MOM festas provençais.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo primeiro:</b> Em caso de reserva dos itens, o cliente terá que efetuar o pagamento de 50% do valor
+        do contrato na assinatura deste, os demais 50% na retirada das peças.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo segundo:</b> Na desistência por parte da <b>CONTRATANTE</b> da reserva dos itens, a empresa <b>MOM
+            Festas Provençais</b> não devolverá o valor já pago como adiantamento da locação, em razão de que os itens
+        contratados deixaram de ser locados para terceiros, ficando assim, a <b>CONTRATANTE</b> com um <b>CRÉDITO</b>
+        para futura locação em até 180 (cento e oitenta) dias.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo terceiro:</b> No entanto, caso não haja retirada das peças no prazo estipulado, o cliente <b>CONTRATANTE</b>
+        perderá 100% do valor pago, ficando este sem o dinheiro também do <b>CRÉDITO</b>.
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 6ª.</b> Somente poderá ser feita a troca do item locado descrito na cláusula 1ª, no máximo 01 (uma)
+        vez, caso contrário, o cliente <b>CONTRATANTE</b> pagará uma multa de 10% do contrato para reformular um novo
+        pedido, se repetindo a uma multa a cada nova troca.
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 7ª.</b> Caso o cliente CONTRATANTE não entregue os itens locados em perfeitas condições de uso
+        (danificadas, rachadas, quebradas, etc.), assim como foram entregues, será cobrado o valor da indenização ao
+        qual se refere 10x do valor locado, conforme estipulado na cláusula 1ª deste contrato.
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 8ª.</b> Todos os materiais serão conferidos pela MOM festas provençais na entrega e na coleta destes
+        itens. O cliente deverá estar presente para conferir e constatar que não falta nenhum material, caso não possa
+        estar presente, o material deverá ser conferido por alguém que assuma a responsabilidade perante o aluguel.
+        Deste modo, os termos de aluguel e devolução de materiais serão assinados pelo cliente ou pessoa responsável,
+        bem como, assinado pelo responsável da empresa contratada.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo primeiro:</b> Os itens de pelúcia deverá ser conferido em perfeito estado, e se na devolução vier
+        danificado ou sujo o cliente pagará 2x o valor do item (pelúcia) para ser consertado ou lavado. Da mesma forma
+        será com os arranjos de flores.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo segundo:</b> Os itens eletrônicos serão entregues com as pilhas ou baterias conforme a necessidade
+        do aparelho, sendo assim, as mesmas deverão ser entregues juntamente com o item. Não havendo a devolução, será
+        cobrado o valor de mercado tanto das pilhas ou baterias.
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 9ª.</b> Após a conferência do material, o cliente deverá ler o contrato e assiná-lo, bem como também
+        o termo de responsabilidade que se encontra na última página deste contrato.
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 10ª.</b> Os materiais deverão ser entregues limpos, embalados e também coletados da mesma forma que
+        foi entregue ao <b>CONTRATANTE</b>.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo primeiro:</b> Para limpeza dos materiais, não utilizar esponjas abrasivas e de aço. A limpeza
+        poderá ser feita com pano úmido e detergente neutro. Qualquer outro material que possa danificar as peças deverá
+        ser perguntado sobre sua utilização antes mesmo de utilizá-lo.
+    </p>
+    <p class="text-justify paragraph indent">
+        <b>Parágrafo segundo:</b> Os itens (louças, vidros, bandejas, enfeites etc.) deverão ser devolvidos embalados
+        com plástico bolha, caso contrário será cobrado o valor de R$ 10,00 ( dez reais) pelo plástico bolha.
+    </p>
+    <p class="text-justify paragraph">
+        <b>II – DO FORO</b>
+    </p>
+    <p class="text-justify paragraph">
+        <b>Cláusula 11ª.</b> Para dirimir quaisquer controvérsias oriundas do presente contrato, as partes elegem o foro
+        da comarca de Natal/RN. Por estarem assim juntos e contratados, firmam o presente instrumento, em duas vias de
+        igual teor, juntamente com 02 (duas) testemunhas.
+    </p>
+    <p class="text-justify paragraph">
+        Termo de responsabilidade de retirada de peças, em horário diferente do pactuado abaixo.
+    </p>
+    <p class="text-justify paragraph">
+        As partes, <b>CONTRATANTE</b> e <b>CONTRATADA</b>, <b>DECLARAM</b> para os devidos fins que em <b>COMUM
+            ACORDO</b>, por mera liberdade, ajustaram o horário de retirada e devolução das peças locadas (cláusula 1ª)
+        por haver disponibilidade, ficando o seguinte:
+    </p>
+    <table class="dates">
+        <tr>
+            <td><b>RETIRADA</b></td>
+            <td>
+                <b>
+                    <?= Formatter::formatDate(
+                        $contract->getStartDate(),
+                        \Application\Util\DateTime::getDateFormatTextualLong()
+                    ) ?>
+                </b>
+            </td>
+        </tr>
+        <tr>
+            <td><b>DEVOLUÇÃO</b></td>
+            <td>
+                <b>
+                    <?= Formatter::formatDate(
+                        $contract->getEndDate(),
+                        \Application\Util\DateTime::getDateFormatTextualLong()
+                    ) ?>
+                </b>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <hr>
+    <p class="text-right paragraph">
+        Natal, RN - <?= Formatter::formatDate($issueDate, \Application\Util\DateTime::getDateFormatTextualShort()) ?>.
+    </p>
+    <div>
+        <table>
+            <tr>
+                <td class="text-center">_________________________________</td>
+                <td class="text-center">_________________________________</td>
+            </tr>
+            <tr>
+                <td class="text-center">CONTRATANTE</td>
+                <td class="text-center">CONTRATADA (Mom Festas)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .text-justify {
+        text-align: justify;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .title {
+        font-size: 14px;
+    }
+
+    .paragraph {
+        font-size: 12px;
+    }
+
+    .paragraph.indent {
+        text-indent: 25px;
+    }
+
+    .note {
+        font-size: 10px;
+    }
+
+    .container {
+        font-family: Arial, sans-serif;
+    }
+
+    table {
+        font-size: 12px;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table.items {
+        border-collapse: collapse;
+        font-size: 12px;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table.items td, th {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    table.dates {
+        border-collapse: collapse;
+        font-size: 12px;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table.dates td, th {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    table tr td.row-total {
+        border: none;
+    }
+</style>
+
+

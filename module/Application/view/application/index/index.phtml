@@ -1,0 +1,20 @@
+<?php
+declare(strict_types=1);
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+?>
+<div class="jumbotron">
+    <h1 class="display-4 text-center"><?= $this->__get('welcomeMessage') ?? null ?></h1>
+
+    <p class="text-center">
+        <?= $this->__get('descriptionMessage') ?? null ?>
+    </p>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+        <a class="btn btn-primary btn-lg" href="<?= $this->__get('newContractLink') ?? null ?>">
+            <?= $this->__get('newContractButtonLabel') ?? null ?> &raquo;</a>
+    </div>    
+</div>

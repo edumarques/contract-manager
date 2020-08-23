@@ -1,0 +1,101 @@
+<?php
+/** @var Laminas\View\Renderer\PhpRenderer $this */
+
+use Application\Model\Form\NewContractForm;
+use Laminas\View\Helper\Placeholder\Container\AbstractContainer;
+
+$this->headTitle($this->translate('new'))->setDefaultAttachOrder(AbstractContainer::PREPEND);
+
+/** @var NewContractForm $newContractForm */
+$newContractForm = $this->__get('newContractForm');
+?>
+
+<br/>
+
+<h3 class="text-center"> <?= $this->translate('customer_data') ?> </h3>
+
+<br/>
+
+<form action="<?= $newContractForm->getAction() ?>" method="<?= $newContractForm->getMethod() ?>">
+
+    <?php
+    foreach ($newContractForm->getSingleFields() as $field) { ?>
+        <div class="form-group">
+            <label for="<?= $field->getName() ?>"><?= $field->getLabel(); ?></label>
+            <?php
+            echo $this->formInput($field);
+            echo $this->formElementErrors($field);
+            ?>
+        </div>
+    <?php } ?>
+
+    <div class="form-group">
+        <label><?= $newContractForm->getLabelForPaymentMethodGroup() ?></label>
+        <?php
+        foreach ($newContractForm->getPaymentMethodFields() as $field) { ?>
+            <div class="form-check">
+                <?php
+                echo $this->formInput($field);
+                echo $this->formElementErrors($field);
+                ?>
+                <label for="<?= $field->getName() ?>" class="form-check-label"><?= $field->getLabel(); ?></label>
+            </div>
+        <?php } ?>
+    </div>
+
+    <hr>
+
+    <h3 class="text-center"> <?= $this->translate('items') ?> </h3>
+
+    <br/>
+
+    <div class="table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
+            <tr>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center"><?= $this->translate('item_code'); ?></th>
+                <th scope="col" class="text-center"><?= $this->translate('item_description'); ?></th>
+                <th scope="col" class="text-center"><?= $this->translate('item_quantity'); ?></th>
+                <th scope="col" class="text-center"><?= $this->translate('item_unit_price'); ?></th>
+            </tr>
+            </thead>
+            <?php
+            $row = 1;
+            foreach ($newContractForm->getItemsField() as $index => $itemField) { ?>
+                <tr>
+                    <th scope="row" class="align-middle text-center"><?= $row ?></th>
+                    <?php foreach ($itemField as $field) { ?>
+                        <td>
+                            <div class="form-group">
+                                <label for="<?= $field->getName() ?>"><?= $field->getLabel(); ?></label>
+                                <?php
+                                echo $this->formInput($field);
+                                echo $this->formElementErrors($field);
+                                ?>
+                            </div>
+                        </td>
+                    <?php } ?>
+                </tr>
+                <?php $row++;
+            } ?>
+        </table>
+    </div>
+
+
+    <hr>
+
+    <br/>
+
+    <div class="text-center">
+        <?php
+        $buttonGenerateContract = $newContractForm->getGenerateContractButton();
+        echo $this->formElement($buttonGenerateContract);
+        ?>
+    </div>
+
+    <br/>
+
+</form>
+
+
