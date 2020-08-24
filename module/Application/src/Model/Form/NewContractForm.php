@@ -164,7 +164,7 @@ class NewContractForm extends AppAbstractForm
 
         $this->paymentMethodDebitCard = (new Radio(self::FIELD_PAYMENT_METHOD))
             ->setLabel($this->translator->translate('payment_method_debit_card'))
-            ->setValue($this->translator->translate('payment-method_debit_card'));
+            ->setValue($this->translator->translate('payment_method_debit_card'));
 
         $this->paymentMethodCreditCard = (new Radio(self::FIELD_PAYMENT_METHOD))
             ->setLabel($this->translator->translate('payment_method_credit_card'))
