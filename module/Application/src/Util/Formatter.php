@@ -53,12 +53,13 @@ class Formatter
     /**
      * @param \DateTime   $dateTime
      * @param string|null $format
+     * @param string|null $locale
      *
      * @return string
      */
-    public static function formatDate(\DateTime $dateTime, ?string $format = null): string
+    public static function formatDate(\DateTime $dateTime, ?string $format = null, ?string $locale = null): string
     {
-        $format = $format ?? DateTime::getDateFormatShort();
+        $format = $format ?? DateTime::getDateFormatShort($locale);
 
         return strftime($format, $dateTime->getTimestamp());
     }
@@ -67,12 +68,13 @@ class Formatter
     /**
      * @param \DateTime   $dateTime
      * @param string|null $format
+     * @param string|null $locale
      *
      * @return string
      */
-    public static function formatTime(\DateTime $dateTime, ?string $format = null): string
+    public static function formatTime(\DateTime $dateTime, ?string $format = null, ?string $locale = null): string
     {
-        $format = $format ?? DateTime::getTimeFormat();
+        $format = $format ?? DateTime::getTimeFormat($locale);
 
         return strftime($format, $dateTime->getTimestamp());
     }

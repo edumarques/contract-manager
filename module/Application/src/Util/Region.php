@@ -71,7 +71,7 @@ class Region
     /**
      * @return string
      */
-    public function getBrazilianLocale(): string
+    public static function getBrazilianLocale(): string
     {
         return 'pt_BR';
     }
