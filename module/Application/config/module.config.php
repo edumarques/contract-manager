@@ -78,7 +78,7 @@ return [
         ],
     ],
     'translator'      => [
-        'locale'                    => Region::getCurrentLocale(),
+        'locale'                    => Region::getBrazilianLocale(),
         'translation_file_patterns' => [
             [
                 'type'     => 'gettext',
