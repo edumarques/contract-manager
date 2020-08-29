@@ -8,6 +8,7 @@ use Application\Model\Contract\ContractItem;
 use Application\Model\Customer\Customer;
 use Application\Model\Form\NewContractForm;
 use Application\Model\Item\Item;
+use Application\Model\Receipt\Receipt;
 use Application\Util\Cast;
 use Dompdf\Dompdf;
 use Laminas\Stdlib\Parameters;
@@ -19,12 +20,14 @@ use Laminas\View\Resolver\TemplatePathStack;
 
 class PdfGeneratorServiceHelper
 {
-    public const VARIABLE_CONTRACT   = 'contract';
-    public const VARIABLE_ISSUE_DATE = 'issueDate';
+    public const VARIABLE_CONTRACT = 'contract';
+    public const VARIABLE_RECEIPT  = 'receipt';
 
-    protected const TEMPLATE_NAME          = 'contract';
+    protected const CONTRACT_TEMPLATE_NAME = 'contract';
+    protected const RECEIPT_TEMPLATE_NAME  = 'receipt';
     protected const BASE_PATH              = __DIR__ . '/../../../../public';
     protected const PATH_CONTRACT_TEMPLATE = __DIR__ . '/../../view/application/contract-manager/contract.phtml';
+    protected const PATH_RECEIPT_TEMPLATE  = __DIR__ . '/../../view/application/contract-manager/receipt.phtml';
     protected const TEMPLATE_PATH_VIEW     = __DIR__ . '/../../view';
 
 
@@ -105,34 +108,46 @@ class PdfGeneratorServiceHelper
             }
         }
 
+        $dateNow = new \DateTime('now', new \DateTimeZone('UTC'));
+
         $contract = Contract::createFromArray(
             [
                 Contract::START_DATE     => Cast::toDateTime($formParams[NewContractForm::FIELD_START_DATE] ?? null),
                 Contract::END_DATE       => Cast::toDateTime($formParams[NewContractForm::FIELD_END_DATE] ?? null),
                 Contract::PAYMENT_METHOD => Cast::toString($formParams[NewContractForm::FIELD_PAYMENT_METHOD] ?? null),
+                Contract::ISSUE_DATE     => $dateNow,
                 Contract::CUSTOMER       => $customer,
                 Contract::ITEMS          => $itemContractObjs,
             ]
         );
 
+        $receipt = Receipt::createFromArray(
+            [
+                Receipt::CUSTOMER    => $customer,
+                Receipt::ISSUE_DATE  => $dateNow,
+                Receipt::TOTAL_VALUE => $contract->getTotalValue(),
+                Receipt::AMOUNT_PAID => Cast::toFloat($formParams[NewContractForm::FIELD_AMOUNT_PAID] ?? null),
+            ]
+        );
+
         return [
-            self::VARIABLE_CONTRACT   => $contract,
-            self::VARIABLE_ISSUE_DATE => new \DateTime(),
+            self::VARIABLE_CONTRACT => $contract,
+            self::VARIABLE_RECEIPT  => $receipt,
         ];
     }
 
 
     /**
-     * @param array       $variables
-     * @param string|null $templateName
+     * @param array  $variables
+     * @param string $templateName
      *
      * @return ViewModel
      */
-    public function getViewModel(array $variables, ?string $templateName = null): ViewModel
+    public function getViewModel(array $variables, string $templateName): ViewModel
     {
         $viewModel = new ViewModel();
         $viewModel->setVariables($variables);
-        $viewModel->setTemplate($templateName ?? $this->getTemplateName());
+        $viewModel->setTemplate($templateName);
 
         return $viewModel;
     }
@@ -200,7 +215,8 @@ class PdfGeneratorServiceHelper
     public function getTemplateMap(): array
     {
         return [
-            self::TEMPLATE_NAME => self::PATH_CONTRACT_TEMPLATE,
+            self::CONTRACT_TEMPLATE_NAME => self::PATH_CONTRACT_TEMPLATE,
+            self::RECEIPT_TEMPLATE_NAME  => self::PATH_RECEIPT_TEMPLATE,
         ];
     }
 
@@ -219,9 +235,18 @@ class PdfGeneratorServiceHelper
     /**
      * @return string
      */
-    public function getTemplateName(): string
+    public function getContractTemplateName(): string
     {
-        return self::TEMPLATE_NAME;
+        return self::CONTRACT_TEMPLATE_NAME;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getReceiptTemplateName(): string
+    {
+        return self::RECEIPT_TEMPLATE_NAME;
     }
 
 }

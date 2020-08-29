@@ -23,7 +23,7 @@ class Money
      */
     public static function getCurrencyCode(?string $locale = null): ?string
     {
-        $locale = $locale ?? Region::getCurrentLocale();
+        $locale = $locale ?? Region::getDefaultLocale();
 
         switch ($locale) {
             case 'pt_BR':

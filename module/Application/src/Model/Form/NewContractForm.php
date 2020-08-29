@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Application\Model\Form;
 
+use Application\Util\Money;
 use Laminas\Form\Element;
 use Laminas\Form\Element\DateTimeLocal;
 use Laminas\Form\Element\Email;
@@ -28,9 +29,11 @@ class NewContractForm extends AppAbstractForm
     public const FIELD_CUSTOMER_EMAIL             = 'customer-email';
     public const FIELD_ITEMS                      = 'customer-items';
     public const FIELD_PAYMENT_METHOD             = 'payment-method';
+    public const FIELD_AMOUNT_PAID                = 'amount-paid';
     public const FIELD_START_DATE                 = 'start-date';
     public const FIELD_END_DATE                   = 'end-date';
     public const BUTTON_GENERATE_CONTRACT         = 'button-generate-contract';
+    public const BUTTON_GENERATE_RECEIPT          = 'button-generate-receipt';
 
     protected Text $customerName;
 
@@ -62,11 +65,15 @@ class NewContractForm extends AppAbstractForm
 
     protected Radio $paymentMethodBankTransferCard;
 
+    protected \Laminas\Form\Element\Number $amountPaid;
+
     protected DateTimeLocal $startDate;
 
     protected DateTimeLocal $endDate;
 
     protected Submit $generateContractButton;
+
+    protected Submit $generateReceiptButton;
 
 
     public function getFormName(): ?string
@@ -83,6 +90,12 @@ class NewContractForm extends AppAbstractForm
 
     public function init(): void
     {
+        $suffixElementPrice = sprintf(
+            ' (%s %s)',
+            $this->translator->translate('in'),
+            Money::getCurrencySymbol()
+        );
+
         $this->customerName = (new Text(self::FIELD_CUSTOMER_NAME))
             ->setLabel($this->translator->translate('name'))
             ->setAttribute('class', 'form-control')
@@ -174,9 +187,19 @@ class NewContractForm extends AppAbstractForm
             ->setLabel($this->translator->translate('payment_method_bank_transfer'))
             ->setValue($this->translator->translate('payment_method_bank_transfer'));
 
+        $this->amountPaid = (new Number(self::FIELD_AMOUNT_PAID))
+            ->setLabel($this->translator->translate('amount_paid'))
+            ->setAttribute('class', 'form-control')
+            ->setAttribute('step', '.01')
+            ->setAttribute('placeholder', $this->translator->translate('amount_paid') . $suffixElementPrice);
+
         $this->generateContractButton = (new Submit(self::BUTTON_GENERATE_CONTRACT))
             ->setAttribute('class', 'btn btn-primary btn-lg')
             ->setValue($this->translator->translate('button_generate_contract_label') . ' »');
+
+        $this->generateReceiptButton = (new Submit(self::BUTTON_GENERATE_RECEIPT))
+            ->setAttribute('class', 'btn btn-primary btn-lg')
+            ->setValue($this->translator->translate('button_generate_receipt_label') . ' »');
 
         $this->add($this->customerName)
              ->add($this->customerId)
@@ -193,9 +216,11 @@ class NewContractForm extends AppAbstractForm
              ->add($this->paymentMethodDebitCard)
              ->add($this->paymentMethodCreditCard)
              ->add($this->paymentMethodBankTransferCard)
+             ->add($this->amountPaid)
              ->add($this->startDate)
              ->add($this->endDate)
-             ->add($this->generateContractButton);
+             ->add($this->generateContractButton)
+             ->add($this->generateReceiptButton);
     }
 
 
@@ -389,11 +414,33 @@ class NewContractForm extends AppAbstractForm
     /**
      * @codeCoverageIgnore
      *
+     * @return Number
+     */
+    public function getAmountPaid(): \Laminas\Form\Element\Number
+    {
+        return $this->amountPaid;
+    }
+
+
+    /**
+     * @codeCoverageIgnore
+     *
      * @return Submit
      */
     public function getGenerateContractButton(): Submit
     {
         return $this->generateContractButton;
+    }
+
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return Submit
+     */
+    public function getGenerateReceiptButton(): Submit
+    {
+        return $this->generateReceiptButton;
     }
 
 
@@ -415,6 +462,7 @@ class NewContractForm extends AppAbstractForm
             $this->getCustomerEmail(),
             $this->getStartDate(),
             $this->getEndDate(),
+            $this->getAmountPaid(),
         ];
     }
 

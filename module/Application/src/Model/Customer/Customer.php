@@ -42,7 +42,7 @@ class Customer extends AbstractModel
     /**
      * @inheritDoc
      */
-    public static function createFromArray(array $data): AbstractModel
+    public static function createFromArray(array $data): self
     {
         $instance = parent::createFromArray($data);
 

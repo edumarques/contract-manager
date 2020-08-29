@@ -16,8 +16,6 @@ $customer = $contract->getCustomer();
 /** @var ContractItem[] $items */
 $contractItems = $contract->getItems();
 
-/** @var DateTime $issueDate */
-$issueDate = $this->__get('issueDate');
 ?>
 <div class="container">
     <div class="text-center">
@@ -29,7 +27,10 @@ $issueDate = $this->__get('issueDate');
         </h2>
     </div>
     <p class="text-center note">
-        Emissão: <b><?= Formatter::formatDate($issueDate, \Application\Util\DateTime::getDateFormatLong()) ?></b>
+        Emissão: <b><?= Formatter::formatDate(
+                $contract->getIssueDate(),
+                \Application\Util\DateTime::getDateFormatLong()
+            ) ?></b>
     </p>
     <p class="text-center paragraph">
         <b>Identificação do cliente</b>
@@ -68,7 +69,6 @@ $issueDate = $this->__get('issueDate');
             <th>Valor total</th>
         </tr>
         <?php
-        $total = 0;
         foreach ($contractItems as $contractItem) {
             $item = $contractItem->getItem() ?>
             <tr>
@@ -78,14 +78,13 @@ $issueDate = $this->__get('issueDate');
                 <td><?= Formatter::formatMoney($item->getPrice()) ?></td>
                 <td><?= Formatter::formatMoney($contractItem->getTotalValue()) ?></td>
             </tr>
-        <?php $total += $contractItem->getTotalValue();
-        } ?>
+        <?php } ?>
         <tr>
             <td class="row-total"></td>
             <td class="row-total"></td>
             <td class="row-total"></td>
             <td class="row-total"><b>Total</b></td>
-            <td class="row-total"><?= Formatter::formatMoney($total) ?></td>
+            <td class="row-total"><?= Formatter::formatMoney($contract->getTotalValue()) ?></td>
         </tr>
     </table>
     <p class="text-center paragraph">
@@ -245,7 +244,10 @@ $issueDate = $this->__get('issueDate');
     <br/>
     <hr>
     <p class="text-right paragraph">
-        Natal, RN - <?= Formatter::formatDate($issueDate, \Application\Util\DateTime::getDateFormatTextualShort()) ?>.
+        Natal, RN - <?= Formatter::formatDate(
+            $contract->getIssueDate(),
+            \Application\Util\DateTime::getDateFormatTextualShort()
+        ) ?>.
     </p>
     <div>
         <table>

@@ -71,6 +71,15 @@ class Region
     /**
      * @return string
      */
+    public static function getDefaultLocale(): string
+    {
+        return self::getBrazilianLocale();
+    }
+
+
+    /**
+     * @return string
+     */
     public static function getBrazilianLocale(): string
     {
         return 'pt_BR';

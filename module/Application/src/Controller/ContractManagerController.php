@@ -49,25 +49,36 @@ final class ContractManagerController extends AppAbstractActionController
         $request  = $this->getRequest();
         $response = $this->getResponse();
 
-        if ($request->isPost() === false) {
-            $response->setStatusCode(Response::STATUS_CODE_405);
-            $response->setContent('HTTP method not allowed');
+        $response->setStatusCode(Response::STATUS_CODE_405);
+        $response->setContent('HTTP method not allowed');
 
+        if ($request->isPost() === false) {
             return $response;
         }
 
         $postParams = $request->getPost();
+        $pdfContent = null;
+        $filename   = null;
 
-        $pdfContent = $this->pdfGeneratorService->generateContract($postParams);
+        if ($postParams->get(NewContractForm::BUTTON_GENERATE_CONTRACT) !== null) {
+            $pdfContent = $this->pdfGeneratorService->generateContract($postParams);
+            $filename   = $this->translator->translate('contract') . '_'
+                          . str_replace(' ', '', $postParams->get(NewContractForm::FIELD_CUSTOMER_NAME, uniqid()));
+        }
 
-        $filename = $this->translator->translate('contract')
-                    . '_'
-                    . str_replace(' ', '', $postParams->get(NewContractForm::FIELD_CUSTOMER_NAME, uniqid()));
+        if ($postParams->get(NewContractForm::BUTTON_GENERATE_RECEIPT) !== null) {
+            $pdfContent = $this->pdfGeneratorService->generateReceipt($postParams);
+            $filename   = $this->translator->translate('receipt') . '_'
+                          . str_replace(' ', '', $postParams->get(NewContractForm::FIELD_CUSTOMER_NAME, uniqid()));
+        }
 
-        $response->setContent($pdfContent);
-        $headers = $response->getHeaders();
-        $headers->addHeaderLine('content-type: application/pdf');
-        $headers->addHeaderLine("content-disposition: attachment; filename=$filename.pdf");
+        if (isset($pdfContent)) {
+            $response->setStatusCode(Response::STATUS_CODE_200);
+            $response->setContent($pdfContent);
+            $headers = $response->getHeaders();
+            $headers->addHeaderLine('content-type: application/pdf');
+            $headers->addHeaderLine("content-disposition: attachment; filename=$filename.pdf");
+        }
 
         return $response;
     }

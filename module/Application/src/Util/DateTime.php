@@ -57,7 +57,7 @@ class DateTime
      */
     public static function getDateFormatShort(?string $locale = null): string
     {
-        $locale = $locale ?? Region::getCurrentLocale();
+        $locale = $locale ?? Region::getDefaultLocale();
 
         switch ($locale) {
             case 'pt_BR':
@@ -77,7 +77,7 @@ class DateTime
      */
     public static function getDateFormatLong(?string $locale = null): string
     {
-        $locale = $locale ?? Region::getCurrentLocale();
+        $locale = $locale ?? Region::getDefaultLocale();
 
         switch ($locale) {
             case 'pt_BR':
@@ -97,7 +97,7 @@ class DateTime
      */
     public static function getDateFormatTextualShort(?string $locale = null): string
     {
-        $locale = $locale ?? Region::getCurrentLocale();
+        $locale = $locale ?? Region::getDefaultLocale();
 
         switch ($locale) {
             case 'pt_BR':
@@ -117,7 +117,7 @@ class DateTime
      */
     public static function getDateFormatTextualLong(?string $locale = null): string
     {
-        $locale = $locale ?? Region::getCurrentLocale();
+        $locale = $locale ?? Region::getDefaultLocale();
 
         switch ($locale) {
             case 'pt_BR':

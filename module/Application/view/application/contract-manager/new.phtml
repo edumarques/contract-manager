@@ -88,10 +88,16 @@ $newContractForm = $this->__get('newContractForm');
     <br/>
 
     <div class="text-center">
-        <?php
-        $buttonGenerateContract = $newContractForm->getGenerateContractButton();
-        echo $this->formElement($buttonGenerateContract);
-        ?>
+        <span>
+            <?php
+            echo $this->formElement($newContractForm->getGenerateContractButton());
+            ?>
+        </span>
+        <span>
+            <?php
+            echo $this->formElement($newContractForm->getGenerateReceiptButton());
+            ?>
+        </span>
     </div>
 
     <br/>

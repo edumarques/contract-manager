@@ -12,6 +12,7 @@ class Contract extends AbstractModel
     public const CUSTOMER       = 'customer';
     public const START_DATE     = 'startDate';
     public const END_DATE       = 'endDate';
+    public const ISSUE_DATE     = 'issueDate';
     public const PAYMENT_METHOD = 'paymentMethod';
     public const ITEMS          = 'items';
 
@@ -22,6 +23,8 @@ class Contract extends AbstractModel
     protected ?\DateTime $startDate = null;
 
     protected ?\DateTime $endDate = null;
+
+    protected ?\DateTime $issueDate = null;
 
     protected ?string $paymentMethod = null;
 
@@ -52,6 +55,10 @@ class Contract extends AbstractModel
 
         if (isset($data[self::END_DATE])) {
             $instance->setEndDate($data[self::END_DATE]);
+        }
+
+        if (isset($data[self::ISSUE_DATE])) {
+            $instance->setIssueDate($data[self::ISSUE_DATE]);
         }
 
         if (isset($data[self::PAYMENT_METHOD])) {
@@ -173,6 +180,32 @@ class Contract extends AbstractModel
     /**
      * @codeCoverageIgnore
      *
+     * @return \DateTime|null
+     */
+    public function getIssueDate(): ?\DateTime
+    {
+        return $this->issueDate;
+    }
+
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @param \DateTime|null $issueDate
+     *
+     * @return self
+     */
+    public function setIssueDate(?\DateTime $issueDate): self
+    {
+        $this->issueDate = $issueDate;
+
+        return $this;
+    }
+
+
+    /**
+     * @codeCoverageIgnore
+     *
      * @return string|null
      */
     public function getPaymentMethod(): ?string
@@ -219,6 +252,21 @@ class Contract extends AbstractModel
         $this->items = $items;
 
         return $this;
+    }
+
+
+    /**
+     * @return float
+     */
+    public function getTotalValue(): float
+    {
+        $totalValue = 0;
+
+        foreach ($this->getItems() as $item) {
+            $totalValue += $item->getTotalValue();
+        }
+
+        return $totalValue;
     }
 
 }

@@ -1,0 +1,71 @@
+<?php
+/** @var Laminas\View\Renderer\PhpRenderer $this */
+
+use Application\Model\Customer\Customer;
+use Application\Model\Receipt\Receipt;
+use Application\Service\PdfGeneratorServiceHelper;
+use Application\Util\Formatter;
+
+/** @var Receipt $receipt */
+$receipt = $this->__get(PdfGeneratorServiceHelper::VARIABLE_RECEIPT);
+
+/** @var Customer $customer */
+$customer = $receipt->getCustomer();
+
+?>
+<div class="container">
+    <div class="text-center">
+        <img src="img/logo_mom.jpg" alt="Mom - Festas Provençais" width="150px">
+    </div>
+    <p class="text-center note">
+        Av. Interventor Mario Câmara, nº 989. Bairro: Alecrim – Natal/RN
+    </p>
+    <p class="text-center note">
+        Tel.: (84) 98816-0673 – (84) 99412-1602
+    </p>
+    <h2 class="text-center title">
+        RECIBO DE PRESTAÇÃO DE SERVIÇOS
+    </h2>
+    <p class="paragraph">
+        Recebemos do Sr. (a) <b><?= $customer->getName() ?></b>
+        a importância de <b><?= Formatter::formatMoney($receipt->getAmountPaid()) ?></b>
+        referente ao pagamento de <b><?= Formatter::formatMoney($receipt->getTotalValue()) ?></b>,
+        restando <b><?= Formatter::formatMoney($receipt->getAmountLeft()) ?></b>.
+    </p>
+    <p class="paragraph text-center">
+        Pelo qual dou plena e total quitação.
+    </p>
+    <p class="paragraph text-right">
+        Natal, <?= Formatter::formatDate($receipt->getIssueDate()) ?>
+    </p>
+</div>
+
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .title {
+        font-size: 14px;
+    }
+
+    .paragraph {
+        font-size: 12px;
+    }
+
+    .note {
+        font-size: 10px;
+    }
+
+    .container {
+        margin-left: 150px;
+        margin-right: 150px;
+        font-family: Arial, sans-serif;
+    }
+</style>
+
+
