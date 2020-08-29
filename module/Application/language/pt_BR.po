@@ -108,3 +108,12 @@ msgstr "em"
 
 msgid "contract"
 msgstr "Contrato"
+
+msgid "amount_paid"
+msgstr "Parcela paga"
+
+msgid "receipt"
+msgstr "Recibo"
+
+msgid "button_generate_receipt_label"
+msgstr "Gerar recibo"
