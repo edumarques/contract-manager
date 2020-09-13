@@ -7,7 +7,7 @@ use Application\Controller\ContractManagerController;
 use Application\Controller\IndexController;
 use Application\Factory\Controller\ContractManagerControllerFactory;
 use Application\Factory\Controller\IndexControllerFactory;
-use Application\Factory\Service\ContractManagerServiceFactory;
+use Application\Factory\Service\PdfGeneratorServiceFactory;
 use Application\Service\PdfGeneratorService;
 use Application\Service\PdfGeneratorServiceHelper;
 use Application\Util\Region;
@@ -51,7 +51,7 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            PdfGeneratorService::class       => ContractManagerServiceFactory::class,
+            PdfGeneratorService::class       => PdfGeneratorServiceFactory::class,
             PdfGeneratorServiceHelper::class => InvokableFactory::class,
         ],
     ],

@@ -6,13 +6,12 @@ namespace Application\Factory\Service;
 use Application\Service\PdfGeneratorService;
 use Application\Service\PdfGeneratorServiceHelper;
 use Interop\Container\ContainerInterface;
-use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * @codeCoverageIgnore
  */
-class ContractManagerServiceFactory implements FactoryInterface
+class PdfGeneratorServiceFactory implements FactoryInterface
 {
     /**
      * @inheritDoc
