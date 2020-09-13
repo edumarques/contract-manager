@@ -26,7 +26,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "ApplicationTest\\": "module/Application/test/"
+      "ApplicationIntegrationTest\\": "module/Application/test/integration",
+      "ApplicationUnitTest\\": "module/Application/test/unit"
     }
   },
   "scripts": {
