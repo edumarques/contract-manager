@@ -5,4 +5,4 @@ php:
   - "7.0"
 before_script:
   - composer install
-script: phpunit --configuration phpunit.xml.dist --coverage-text
+script: vendor/phpunit/phpunit/phpunit --configuration phpunit.xml.dist --coverage-text
