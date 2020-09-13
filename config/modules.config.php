@@ -12,6 +12,8 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
+    'Laminas\Db',
+    'Laminas\Log',
     'Laminas\Form',
     'Laminas\Hydrator',
     'Laminas\InputFilter',
